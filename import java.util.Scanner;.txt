@@ -1,51 +1,95 @@
-import java.util.Scanner;
-
-public class RamenReinigenCalculator {
-
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        
-        // Informatie tonen aan de gebruiker
-        System.out.println("Bereken de kosten voor het reinigen van je ramen");
-        
-        // Vraag om het aantal ramen
-        System.out.print("Aantal ramen: ");
-        int numberOfWindows = scanner.nextInt();
-        
-        // Vraag om de frequentie van reiniging
-        System.out.println("Frequentie van reiniging:");
-        System.out.println("1. Om de 4 weken (€1,60 per raam)");
-        System.out.println("2. Om de 8 weken (€2,60 per raam)");
-        System.out.print("Kies een optie (1 of 2): ");
-        int frequencyOption = scanner.nextInt();
-        
-        // Basisprijs en prijs per raam afhankelijk van de frequentie
-        double costPerWindow = 0;
-        
-        if (frequencyOption == 1) {
-            costPerWindow = 1.60;
-        } else if (frequencyOption == 2) {
-            costPerWindow = 2.60;
-        } else {
-            System.out.println("Ongeldige keuze. Programma stopt.");
-            return;
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramen Reinigen Berekeningstool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
         }
-        
-        // Basisminimum kosten
-        double minimumCost = 15.00;
-        
-        // Bereken de kosten
-        double totalCost = numberOfWindows * costPerWindow;
-        
-        // De kosten moeten minimaal €15 zijn
-        if (totalCost < minimumCost) {
-            totalCost = minimumCost;
+
+        h1 {
+            color: #333;
         }
-        
-        // Resultaat tonen
-        System.out.printf("De kosten voor het reinigen van %d raam(s) om de %d weken is €%.2f.%n", 
-                          numberOfWindows, (frequencyOption == 1 ? 4 : 8), totalCost);
-        
-        scanner.close();
-    }
-}
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="number"], select {
+            padding: 5px;
+            width: 100px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bereken de kosten voor het reinigen van je ramen</h1>
+
+    <label for="windows">Aantal ramen:</label>
+    <input type="number" id="windows" min="1" value="1">
+
+    <label for="frequency">Frequentie van reiniging:</label>
+    <select id="frequency">
+        <option value="4">Om de 4 weken (€1,60 per raam)</option>
+        <option value="8">Om de 8 weken (€2,60 per raam)</option>
+    </select>
+
+    <button onclick="calculateCost()">Bereken Kosten</button>
+
+    <div class="result" id="result"></div>
+
+    <script>
+        function calculateCost() {
+            // Haal de ingevoerde waarden op
+            const numberOfWindows = parseInt(document.getElementById('windows').value);
+            const frequency = parseInt(document.getElementById('frequency').value);
+            
+            // Basisprijs
+            const minimumCost = 15;
+            let costPerWindow = 0;
+
+            // Kies het prijs per raam afhankelijk van de frequentie
+            if (frequency === 4) {
+                costPerWindow = 1.60;
+            } else if (frequency === 8) {
+                costPerWindow = 2.60;
+            }
+
+            // Bereken de totale kosten
+            let totalCost = numberOfWindows * costPerWindow;
+
+            // De kosten moeten minimaal €15 zijn
+            if (totalCost < minimumCost) {
+                totalCost = minimumCost;
+            }
+
+            // Toon de berekende kosten
+            document.getElementById('result').innerText = `De kosten voor het reinigen van ${numberOfWindows} raam(s) om de ${frequency} weken is €${totalCost.toFixed(2)}.`;
+        }
+    </script>
+</body>
+</html>
