@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raamreiniging Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 15px;
+        }
+        .question label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .question select, .question input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Bereken de kosten van raamreiniging</h1>
+
+    <div class="question">
+        <label for="frequency">Hoe vaak moet er gewassen worden?</label>
+        <select id="frequency">
+            <option value="1">1x per 4 weken</option>
+            <option value="1.5">1x per 6 weken</option>
+            <option value="2">1x per 8 weken</option>
+            <option value="5">Eenmalig</option>
+        </select>
+    </div>
+
+    <div class="question">
+        <label for="insideGlass">Ook de glasbewassing binnen?</label>
+        <select id="insideGlass">
+            <option value="0">Nee</option>
+            <option value="1">Ja</option>
+        </select>
+    </div>
+
+    <div class="question">
+        <label for="floor">Op welke verdieping moeten de ramen gewassen worden?</label>
+        <select id="floor">
+            <option value="1">Gelijkvloers</option>
+            <option value="2">1ste verdieping</option>
+            <option value="3">2de verdieping</option>
+            <option value="3.5">Appartement</option>
+        </select>
+    </div>
+
+    <div class="question">
+        <label for="photo">Foto van uw ramen (optioneel):</label>
+        <input type="file" id="photo">
+    </div>
+
+    <div class="question">
+        <label for="special">Heeft u bijzondere ramen?</label>
+        <input type="checkbox" id="special"> Glas-in-lood, lichtkoepels, miniraampjes, dakraam
+    </div>
+
+    <div class="question">
+        <label for="homePresence">Moet u thuis zijn?</label>
+        <select id="homePresence">
+            <option value="0">Nee, ik hoef niet thuis te zijn</option>
+            <option value="1">Ja, ik wil aanwezig zijn / moet toegang verschaffen</option>
+            <option value="2">Ja, de medewerker moet door mijn huis zijn</option>
+            <option value="3">Nee, maar de medewerker moet klimmen (obstakel)</option>
+        </select>
+    </div>
+
+    <button onclick="calculateCost()">Bereken kosten</button>
+
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+    function calculateCost() {
+        const frequency = parseFloat(document.getElementById('frequency').value);
+        const insideGlass = parseInt(document.getElementById('insideGlass').value);
+        const floor = parseInt(document.getElementById('floor').value);
+        const special = document.getElementById('special').checked;
+        const homePresence = parseInt(document.getElementById('homePresence').value);
+
+        let basePrice = 15; // Basisprijs voor raamreiniging
+
+        // Aanpassen prijs op basis van frequentie
+        basePrice *= frequency;
+
+        // Extra kosten voor glasbewassing binnen
+        if (insideGlass === 1) {
+            basePrice += 15;
+        }
+
+        // Verdiepingstoeslag
+        basePrice += (floor - 1) * 10;
+
+        // Extra kosten voor speciale ramen (bijv. glas-in-lood)
+        if (special) {
+            basePrice += 25;
+        }
+
+        // Kosten voor aanwezigheid of toegang verschaffen
+        if (homePresence === 1 || homePresence === 2) {
+            basePrice += 10;
+        }
+
+        // Kosten voor obstakels (bijv. klimmen)
+        if (homePresence === 3) {
+            basePrice += 20;
+        }
+
+        // Resultaat tonen
+        document.getElementById('result').textContent = `De geschatte kosten zijn €${basePrice.toFixed(2)}.`;
+    }
+</script>
+
+</body>
+</html>
